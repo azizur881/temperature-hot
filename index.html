@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+           
+        }
+    </style>
+</head>
+
+<body id = "body" >
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id ="city" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button type="button" id = 'btn' class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id = 'img' src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id ='area'>Dhaka</h1>
+            <h3><span id = 'temp'>38.06</span>&deg;C</h3>
+            <h1 class="lead" id = 'sky'>Clouds</h1>
+        </div>
+    </div>
+    <script>
+   
+   const weatherApi ={
+       baseUrl: "https://api.openweathermap.org/data/2.5/weather/",
+       key : "d8079b120ab97274060f48992ad31e27",
+      
+   }
+   
+
+    document.getElementById('btn').addEventListener('click',function(){
+    const city = document.getElementById("city").value
+
+        
+
+fetch(`${weatherApi.baseUrl}?q=${city}&appid=${weatherApi.key}&units=metric`)
+    .then(weather => weather.json())
+    .then(data =>{
+        getResult(data)
+        console.log(data)
+        backGround()
+    })
+
+})
+
+    function getResult(data){
+        
+        document.getElementById('area').innerText =`${data.name},${data.sys.country}`
+        document.getElementById('temp').innerHTML = `${Math.round(data.main.temp)}`
+       
+        document.getElementById('sky').innerHTML = `${data.weather[0].main}`
+    
+    }
+
+    function backGround(){
+       
+        const sky =   document.getElementById('sky').innerText
+        if( sky === "Clouds" ){
+            document.body.style.backgroundImage="url('images/clouds.jpg')"
+        }
+        if( sky === "Clear" ){
+            document.body.style.backgroundImage="url('images/clear.jpg')"
+          
+        }
+        if( sky === "Rain" ){
+            document.body.style.backgroundImage="url('images/rain.jpg')"
+          
+        }
+        if( sky === "Haze" ){
+            document.body.style.backgroundImage="url('images/haze.jpg')"
+          
+        }
+        if( sky === "Mist" ){
+            document.body.style.backgroundImage="url('images/mist.jpg')"
+          
+        }
+    }
+
+    </script>
+</body>
+
+</html>
